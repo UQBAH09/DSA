@@ -1,64 +1,93 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
 
-void selectionsort(int array[] ,  int size){
-    for(int i=0 ; i<size-1 ; i++){
-        int minindex = i;
-        
-        for(int j = i + 1 ; j < size ; j++){
-            if(array[minindex] > array[j]){
-                minindex = j ;
-            }
-        }
-        swap(array[i], array[minindex]);
-    }
-}
-
-int binarySearch(int arr[], int size, int search){
-    int low = 0;
-    int high = size - 1;
-    int mid = size / 2;
-    while(low <= high){
-        if(arr[mid] == search) return mid;
-        else if(arr[mid] > search) low = mid;
-        else if (arr[mid < search]) high = mid;
-        mid -= (high - low)/2;
-    }
-    return -1;
-}
-
-int interpolationSearch(int arr[], int size, int s){
-    int low = 0;
-    int high = size - 1;
-    while (low <= high && s >= arr[low] && s <= arr[high])
+void selectionSort(int arr[], int size){
+    for (int i = 0; i < size - 1; i++)
     {
-        if (high == low){
-            if (arr[low] == s){
-                return low;
+        int minIndex = i;
+        for (int j = i + 1; j < size; j++)
+        {
+            if(arr[minIndex] > arr[j]){
+                minIndex = j;
             }
-            return -1;
         }
-
-        int pos = low + (((s - arr[low]) * (high - low)) / (arr[high] - arr[low]));
-
-        if (arr[pos] == s) return pos;
-        else if (arr[pos] < s) low = pos + 1;
-        else high = pos - 1;
-    }
-
-    return -1;
+        swap(arr[i], arr[minIndex]);
+    }   
 }
 
-void printArr(int arr[], int size){
-    cout << "Array: " ;
+void insertionSort(int arr[], int size){
+    for (int i = 1; i < size; i++)
+    {
+        int key = arr[i];
+        int j = i - 1;
+
+        while(j >= 0 && arr[j] > key){
+            arr[j+1] = arr[j];
+            j--;
+        }
+        arr[j+1] = key;
+    }
+}
+
+void print(int arr[], int size){
+    cout << "Array: " << endl;
     for (int i = 0; i < size; i++)
     {
         cout << arr[i] << " ";
     }
-    cout << endl;
+}
+
+int linearSearch(int arr[], int size, int search){
+    for (int i = 0; i < size; i++)
+    {
+        if(arr[i] == search){
+            return i;
+        }
+    }
+    return -1;
+}
+
+int binarySearch(int arr[], int size, int search){
+    int left = 0;
+    int right = size - 1;
+    while (left <= right)
+    {
+        int mid = left + (right - left) / 2;
+        if(arr[mid] == search) return mid;
+        else if(arr[mid] < search) left = mid + 1;
+        else if(arr[mid] > search) right = mid - 1;
+    }
+    return -1;
+}
+
+int interpolationSearch(int arr[], int size, int search){
+    int left = 0;
+    int right = size - 1;
+
+    while(left <= right && search >= arr[left] && search <= arr[right]){
+        if (left == right)
+        {
+            if (arr[left] == search) return -1;
+        }
+        
+        int pos = left + ((search - arr[left]) * (right - left)) / (arr[right] - arr[left]);
+
+        if(arr[pos] == search) return pos;
+
+        if(arr[pos] < search) left = pos + 1;
+
+        else right = pos - 1;
+    }
+    return -1;
 }
 
 int main(){
-    int arr[10] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
-    cout << "Element found at index:", interpolationSearch(arr, 10, 70);
+    int arr[10] = {3,7,3,6,9,5,2,1,5,0};
+    selectionSort(arr, 10);
+    // insertionSort(arr, 10);
+    // print(arr, 10);
+
+    cout << "Linear Search: " << linearSearch(arr,10,6) << endl;
+    cout << "Binary Search: " << binarySearch(arr,10,6) << endl;
+    cout << "Interpolation Search: " << interpolationSearch(arr,10,6) << endl;
 }
